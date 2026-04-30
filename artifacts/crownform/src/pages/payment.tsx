@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 const PAYMENT_METHODS = [
   {
     name: "PayPal",
-    handle: "$CrownFormStudios",
-    link: "https://paypal.me/CrownFormStudios",
+    handle: "$portiaallen40",
+    link: "https://paypal.me/portiaallen40",
     memo: "Send as Friends & Family",
     color: "#0070E0",
     bg: "from-[#003087]/20 to-[#009CDE]/10",
@@ -21,8 +21,8 @@ const PAYMENT_METHODS = [
   },
   {
     name: "Cash App",
-    handle: "$CrownFormStudios",
-    link: "https://cash.app/$CrownFormStudios",
+    handle: "$portiaallen40",
+    link: "https://cash.app/$portiaallen40",
     memo: "Note your name & service",
     color: "#00D54B",
     bg: "from-[#00D54B]/20 to-[#00D54B]/5",
@@ -35,8 +35,8 @@ const PAYMENT_METHODS = [
   },
   {
     name: "Venmo",
-    handle: "@CrownFormStudios",
-    link: "https://venmo.com/CrownFormStudios",
+    handle: "@portiaallen40",
+    link: "https://venmo.com/portiaallen40",
     memo: "Include your name & service",
     color: "#3396CD",
     bg: "from-[#3396CD]/20 to-[#3396CD]/5",
@@ -49,7 +49,7 @@ const PAYMENT_METHODS = [
   },
   {
     name: "Zelle",
-    handle: "crownformstudios@gmail.com",
+    handle: "portiaallen40@gmail.com",
     link: "https://enroll.zellepay.com/",
     memo: "Send directly via your bank app",
     color: "#6D1ED4",
