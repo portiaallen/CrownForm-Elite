@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Crown, ArrowRight, FileText, CheckCircle, ShieldCheck, ChevronRight, ChevronDown, Menu, X, ExternalLink, Clock, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
 import brandFlyer from "@assets/file_00000000e71471fd82d71f886a0479c3_1777583268827.png";
 
 const INTAKE_FORM_URL = "https://forms.gle/8NnKNW2fwY7z548b7";
@@ -39,6 +40,7 @@ function FaqItem({ question, answer, index }: { question: string; answer: string
 }
 
 export default function Home() {
+  const [, navigate] = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lightboxImage, setLightboxImage] = useState<{ src: string; label: string } | null>(null);
@@ -99,8 +101,18 @@ export default function Home() {
             <a href="#process" className="text-muted-foreground hover:text-primary transition-colors">Process</a>
             <a href="#testimonials" className="text-muted-foreground hover:text-primary transition-colors">Clientele</a>
             <a href="#faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a>
-            <Button variant="outline" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground rounded-none" onClick={openIntakeForm}>
+            <Button
+              variant="outline"
+              className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground rounded-none"
+              onClick={openIntakeForm}
+            >
               Inquire Now
+            </Button>
+            <Button
+              className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none"
+              onClick={() => navigate("/payment")}
+            >
+              Pay Now
             </Button>
           </nav>
 
@@ -121,8 +133,14 @@ export default function Home() {
             <a href="#process" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Process</a>
             <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Clientele</a>
             <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">FAQ</a>
-            <Button className="bg-primary text-primary-foreground rounded-none w-full" onClick={openIntakeForm}>
+            <Button className="bg-transparent border border-primary/50 text-primary rounded-none w-full" onClick={openIntakeForm}>
               Inquire Now
+            </Button>
+            <Button
+              className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none w-full"
+              onClick={() => { setMobileMenuOpen(false); navigate("/payment"); }}
+            >
+              Pay Now
             </Button>
           </motion.div>
         )}
