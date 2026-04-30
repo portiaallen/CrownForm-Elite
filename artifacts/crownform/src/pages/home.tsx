@@ -1,26 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Crown, ArrowRight, FileText, CheckCircle, ShieldCheck, Mail, ChevronRight, Menu, X } from "lucide-react";
+import { Crown, ArrowRight, FileText, CheckCircle, ShieldCheck, ChevronRight, Menu, X, ExternalLink, Clock, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
 import brandFlyer from "@assets/file_00000000e71471fd82d71f886a0479c3_1777583268827.png";
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  service: z.string().min(1, "Please select a service"),
-  message: z.string().min(10, "Please provide more details"),
-});
+const INTAKE_FORM_URL = "https://forms.gle/8NnKNW2fwY7z548b7";
 
 export default function Home() {
-  const { toast } = useToast();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -36,30 +22,17 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const openIntakeForm = () => {
+    window.open(INTAKE_FORM_URL, "_blank", "noopener,noreferrer");
+    setMobileMenuOpen(false);
+  };
+
   const scrollToContact = () => {
     const el = document.getElementById("contact");
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
       setMobileMenuOpen(false);
     }
-  };
-
-  const form = useForm<z.infer<typeof contactSchema>>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      service: "",
-      message: "",
-    },
-  });
-
-  const onSubmit = (data: z.infer<typeof contactSchema>) => {
-    toast({
-      title: "Inquiry Submitted",
-      description: "Thank you for reaching out. We will review your request and get back to you shortly.",
-    });
-    form.reset();
   };
 
   return (
@@ -83,7 +56,7 @@ export default function Home() {
             <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">Services</a>
             <a href="#process" className="text-muted-foreground hover:text-primary transition-colors">Process</a>
             <a href="#testimonials" className="text-muted-foreground hover:text-primary transition-colors">Clientele</a>
-            <Button variant="outline" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground rounded-none" onClick={scrollToContact}>
+            <Button variant="outline" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground rounded-none" onClick={openIntakeForm}>
               Inquire Now
             </Button>
           </nav>
@@ -103,7 +76,7 @@ export default function Home() {
             <a href="#services" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Services</a>
             <a href="#process" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Process</a>
             <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Clientele</a>
-            <Button className="bg-primary text-primary-foreground rounded-none w-full" onClick={scrollToContact}>
+            <Button className="bg-primary text-primary-foreground rounded-none w-full" onClick={openIntakeForm}>
               Inquire Now
             </Button>
           </motion.div>
@@ -143,7 +116,7 @@ export default function Home() {
                 <Button 
                   size="lg" 
                   className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-14 px-8 text-sm tracking-widest uppercase group"
-                  onClick={scrollToContact}
+                  onClick={openIntakeForm}
                 >
                   Get Started <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
@@ -226,7 +199,7 @@ export default function Home() {
                   <Button 
                     variant="link" 
                     className="p-0 text-primary hover:text-primary/80 uppercase tracking-widest text-xs"
-                    onClick={scrollToContact}
+                    onClick={openIntakeForm}
                   >
                     Request Service <ChevronRight className="w-4 h-4 ml-1" />
                   </Button>
@@ -349,95 +322,73 @@ export default function Home() {
       {/* CTA & Contact */}
       <section id="contact" className="py-32 relative">
         <div className="container mx-auto px-6 md:px-12 max-w-5xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-serif mb-6">Step Into Your Next Level</h2>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+            className="text-center mb-16"
+          >
+            <span className="text-primary tracking-[0.2em] text-xs font-semibold uppercase mb-6 block">Begin Your Project</span>
+            <h2 className="text-4xl md:text-6xl font-serif mb-6 leading-[1.1]">Step Into Your Next Level</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-light">
-              Elevate your documents. Enhance your credibility. Start your order below and our team will be in touch within 24 hours.
+              Tell us about your goals through our short intake form. We will review your request and respond within 24 hours with next steps.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="bg-background border border-border/50 p-8 md:p-12 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-3xl rounded-full" />
-            
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 relative z-10">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Full Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="John Doe" className="rounded-none bg-secondary/30 border-white/10 h-12" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Email Address</FormLabel>
-                        <FormControl>
-                          <Input placeholder="john@example.com" className="rounded-none bg-secondary/30 border-white/10 h-12" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="relative bg-background border border-border/50 p-10 md:p-16 shadow-2xl overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-72 h-72 bg-primary/10 blur-3xl rounded-full pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-72 h-72 bg-primary/5 blur-3xl rounded-full pointer-events-none" />
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+
+            <div className="relative z-10 grid md:grid-cols-5 gap-12 items-center">
+              <div className="md:col-span-3">
+                <h3 className="text-2xl md:text-3xl font-serif mb-4 leading-snug">Start Your Order</h3>
+                <p className="text-muted-foreground font-light leading-relaxed mb-8">
+                  Our intake form takes less than two minutes. Share your service of interest, project details, and any reference documents — we will take it from there.
+                </p>
+
+                <div className="space-y-4 mb-10">
+                  {[
+                    { icon: Sparkles, label: "Tailored to your goals and industry" },
+                    { icon: Clock, label: "Typical turnaround in 48 hours or less" },
+                    { icon: ShieldCheck, label: "100% confidential and secure" },
+                  ].map(({ icon: Icon, label }, i) => (
+                    <div key={i} className="flex items-center gap-3 text-sm text-foreground/80">
+                      <Icon className="w-4 h-4 text-primary shrink-0" strokeWidth={1.5} />
+                      <span className="font-light">{label}</span>
+                    </div>
+                  ))}
                 </div>
 
-                <FormField
-                  control={form.control}
-                  name="service"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Service Needed</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className="rounded-none bg-secondary/30 border-white/10 h-12">
-                            <SelectValue placeholder="Select a service" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="rounded-none border-white/10 bg-background">
-                          <SelectItem value="resume">Resume Writing & Optimization</SelectItem>
-                          <SelectItem value="business">Business Document Kit</SelectItem>
-                          <SelectItem value="cleanup">PDF Clean-Up & Polishing</SelectItem>
-                          <SelectItem value="other">Other / Custom Request</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Project Details</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Tell us about your goals and current documents..." 
-                          className="rounded-none bg-secondary/30 border-white/10 min-h-[120px] resize-none" 
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button type="submit" size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-14 text-sm tracking-widest uppercase">
-                  Start Your Order
+                <Button
+                  size="lg"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-14 px-10 text-sm tracking-widest uppercase group"
+                  onClick={openIntakeForm}
+                >
+                  Open Intake Form
+                  <ExternalLink className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
-              </form>
-            </Form>
-          </div>
+                <p className="text-xs text-muted-foreground/70 mt-4 tracking-wide">
+                  Opens our secure Google Form in a new tab.
+                </p>
+              </div>
+
+              <div className="md:col-span-2 flex flex-col items-center text-center md:border-l md:border-white/10 md:pl-12">
+                <Crown className="w-10 h-10 text-primary mb-6 opacity-80" strokeWidth={1.25} />
+                <p className="font-serif italic text-lg leading-relaxed text-foreground/90 mb-2">
+                  "Where Documents Become Authority."
+                </p>
+                <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">CrownForm Studios</p>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
