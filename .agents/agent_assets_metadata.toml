@@ -1,0 +1,20 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "rKUFj_D3oZkNyMNQaMrPP"
+uri = "file://artifacts/crownform/public/images/hero-bg.png"
+type = "image"
+title = "Abstract luxury black gold texture"
+
+[[generated]]
+id = "Un7BK-YhODiNAFkiVqFw6"
+uri = "file://artifacts/crownform/public/images/resume-mockup.png"
+type = "image"
+title = "Resume mockup on dark desk"
+
+[[generated]]
+id = "d9m9eB5X1vkwTrJCaK6f0"
+uri = "file://artifacts/crownform/public/images/business-mockup.png"
+type = "image"
+title = "Invoice and letterhead mockup"
