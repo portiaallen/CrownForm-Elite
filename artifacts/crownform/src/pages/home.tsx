@@ -71,10 +71,13 @@ export default function Home() {
         }`}
       >
         <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-primary font-serif text-xl tracking-wider uppercase">
-            <Crown className="w-5 h-5" strokeWidth={1.5} />
-            <span>CrownForm</span>
-          </div>
+          <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="flex items-center" aria-label="CrownForm Studios">
+            <img
+              src="/images/crownform-logo-dark.png"
+              alt="CrownForm Studios"
+              className={`w-auto transition-all duration-500 ${scrolled ? "h-9 md:h-10" : "h-11 md:h-12"}`}
+            />
+          </a>
           
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
             <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">Services</a>
@@ -180,7 +183,7 @@ export default function Home() {
         <div className="container mx-auto px-6 md:px-12">
           <div className="mb-20 md:flex justify-between items-end">
             <div className="max-w-2xl">
-              <h2 className="text-4xl md:text-5xl font-serif mb-6">Bespoke Services</h2>
+              <h2 className="text-4xl md:text-5xl font-serif mb-6">Signature Services</h2>
               <p className="text-muted-foreground text-lg">Tailored document design that commands attention and respect in any professional setting.</p>
             </div>
           </div>
@@ -257,8 +260,8 @@ export default function Home() {
                   <div className="text-sm text-muted-foreground uppercase tracking-wider">Confidential</div>
                 </div>
                 <div className="border-l border-primary/30 pl-6">
-                  <div className="text-3xl font-serif text-foreground mb-2">Bespoke</div>
-                  <div className="text-sm text-muted-foreground uppercase tracking-wider">Design</div>
+                  <div className="text-3xl font-serif text-foreground mb-2">48hr</div>
+                  <div className="text-sm text-muted-foreground uppercase tracking-wider">Turnaround</div>
                 </div>
               </div>
             </motion.div>
@@ -443,10 +446,11 @@ export default function Home() {
         <div className="container mx-auto px-6 md:px-12">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="flex flex-col items-center md:items-start gap-4">
-              <div className="flex items-center gap-2 text-primary font-serif text-2xl tracking-wider uppercase">
-                <Crown className="w-6 h-6" strokeWidth={1.5} />
-                <span>CrownForm</span>
-              </div>
+              <img
+                src="/images/crownform-logo-dark.png"
+                alt="CrownForm Studios"
+                className="h-12 md:h-14 w-auto"
+              />
               <p className="text-muted-foreground text-sm font-serif italic">Where Documents Become Authority.</p>
             </div>
             
