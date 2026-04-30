@@ -8,7 +8,7 @@ const PAYMENT_METHODS = [
   {
     name: "PayPal",
     handle: "$portiaallen40",
-    link: "https://paypal.me/portiaallen40",
+    link: "https://www.paypal.biz/pkbiz",
     memo: "Send as Friends & Family",
     color: "#0070E0",
     bg: "from-[#003087]/20 to-[#009CDE]/10",
