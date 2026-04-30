@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Crown, ArrowRight, FileText, CheckCircle, ShieldCheck, ChevronRight, Menu, X, ExternalLink, Clock, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,15 @@ const INTAKE_FORM_URL = "https://forms.gle/8NnKNW2fwY7z548b7";
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState<{ src: string; label: string } | null>(null);
+
+  const closeLightbox = useCallback(() => setLightboxImage(null), []);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeLightbox(); };
+    if (lightboxImage) window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightboxImage, closeLightbox]);
 
   const { scrollYProgress } = useScroll();
   const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
@@ -54,6 +63,7 @@ export default function Home() {
           
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
             <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">Services</a>
+            <a href="#portfolio" className="text-muted-foreground hover:text-primary transition-colors">Portfolio</a>
             <a href="#process" className="text-muted-foreground hover:text-primary transition-colors">Process</a>
             <a href="#testimonials" className="text-muted-foreground hover:text-primary transition-colors">Clientele</a>
             <Button variant="outline" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground rounded-none" onClick={openIntakeForm}>
@@ -74,6 +84,7 @@ export default function Home() {
             className="absolute top-full left-0 right-0 bg-background border-b border-border/50 p-6 flex flex-col gap-6 md:hidden shadow-2xl"
           >
             <a href="#services" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Services</a>
+            <a href="#portfolio" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Portfolio</a>
             <a href="#process" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Process</a>
             <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Clientele</a>
             <Button className="bg-primary text-primary-foreground rounded-none w-full" onClick={openIntakeForm}>
@@ -209,6 +220,122 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Portfolio Gallery */}
+      <section id="portfolio" className="py-32 bg-background">
+        <div className="container mx-auto px-6 md:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+            className="mb-16 md:flex justify-between items-end"
+          >
+            <div className="max-w-2xl">
+              <span className="text-primary tracking-[0.2em] text-xs font-semibold uppercase mb-4 block">Sample Work</span>
+              <h2 className="text-4xl md:text-5xl font-serif mb-4">Documents That Open Doors</h2>
+              <p className="text-muted-foreground text-lg font-light leading-relaxed">
+                Three distinct styles — each precision-crafted to command authority in its field. Click any to view full size.
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              className="border-primary/40 text-primary hover:bg-primary hover:text-primary-foreground rounded-none mt-8 md:mt-0 text-xs tracking-widest uppercase"
+              onClick={openIntakeForm}
+            >
+              Order Your Resume
+            </Button>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                src: "/images/resumes/ascension.png",
+                label: "The Ascension",
+                sub: "Executive Upgrade",
+                desc: "Bold authority, structured impact — built for C-suite and senior leadership.",
+              },
+              {
+                src: "/images/resumes/crown.png",
+                label: "The Crown",
+                sub: "Clean Authority",
+                desc: "Refined symmetry with gold accents — ideal for finance and corporate professionals.",
+              },
+              {
+                src: "/images/resumes/signature.png",
+                label: "Signature Aura",
+                sub: "Personality + Presence",
+                desc: "Two-column editorial layout for creative and design-forward professionals.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.6, delay: i * 0.12 }}
+                className="group cursor-pointer flex flex-col"
+                onClick={() => setLightboxImage({ src: item.src, label: item.label })}
+              >
+                <div className="relative overflow-hidden border border-white/10 group-hover:border-primary/40 transition-colors duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+                  <img
+                    src={item.src}
+                    alt={item.label}
+                    className="w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+                    style={{ aspectRatio: "3/4" }}
+                  />
+                  <div className="absolute bottom-4 left-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-2 group-hover:translate-y-0 transform">
+                    <span className="text-white text-xs uppercase tracking-widest bg-primary/90 px-3 py-1">
+                      View Full Size
+                    </span>
+                  </div>
+                </div>
+                <div className="pt-5 pb-2">
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <h3 className="font-serif text-lg text-foreground group-hover:text-primary transition-colors">{item.label}</h3>
+                    <span className="text-xs text-muted-foreground tracking-wider uppercase">{item.sub}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground font-light leading-relaxed">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Lightbox */}
+      {lightboxImage && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 md:p-10"
+          onClick={closeLightbox}
+        >
+          <button
+            onClick={closeLightbox}
+            className="absolute top-5 right-5 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          <motion.div
+            initial={{ scale: 0.92, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="max-h-[90vh] max-w-3xl w-full flex flex-col items-center gap-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={lightboxImage.src}
+              alt={lightboxImage.label}
+              className="max-h-[82vh] w-auto object-contain shadow-2xl border border-white/10"
+            />
+            <p className="text-white/60 text-xs uppercase tracking-widest">{lightboxImage.label} — CrownForm Studios</p>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Why Choose Us & Process */}
       <section id="process" className="py-32">
