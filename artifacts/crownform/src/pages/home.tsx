@@ -1,10 +1,42 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Crown, ArrowRight, FileText, CheckCircle, ShieldCheck, ChevronRight, Menu, X, ExternalLink, Clock, Sparkles } from "lucide-react";
+import { Crown, ArrowRight, FileText, CheckCircle, ShieldCheck, ChevronRight, ChevronDown, Menu, X, ExternalLink, Clock, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import brandFlyer from "@assets/file_00000000e71471fd82d71f886a0479c3_1777583268827.png";
 
 const INTAKE_FORM_URL = "https://forms.gle/8NnKNW2fwY7z548b7";
+
+function FaqItem({ question, answer, index }: { question: string; answer: string; index: number }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5, delay: index * 0.07 }}
+    >
+      <button
+        className="w-full flex items-center justify-between gap-6 py-6 text-left group"
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+      >
+        <span className="font-serif text-lg text-foreground group-hover:text-primary transition-colors">{question}</span>
+        <ChevronDown
+          className={`w-5 h-5 text-primary shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          strokeWidth={1.5}
+        />
+      </button>
+      <motion.div
+        initial={false}
+        animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="overflow-hidden"
+      >
+        <p className="pb-6 text-muted-foreground font-light leading-relaxed pr-10">{answer}</p>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
@@ -66,6 +98,7 @@ export default function Home() {
             <a href="#portfolio" className="text-muted-foreground hover:text-primary transition-colors">Portfolio</a>
             <a href="#process" className="text-muted-foreground hover:text-primary transition-colors">Process</a>
             <a href="#testimonials" className="text-muted-foreground hover:text-primary transition-colors">Clientele</a>
+            <a href="#faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a>
             <Button variant="outline" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground rounded-none" onClick={openIntakeForm}>
               Inquire Now
             </Button>
@@ -87,6 +120,7 @@ export default function Home() {
             <a href="#portfolio" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Portfolio</a>
             <a href="#process" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Process</a>
             <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">Clientele</a>
+            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="text-lg font-serif">FAQ</a>
             <Button className="bg-primary text-primary-foreground rounded-none w-full" onClick={openIntakeForm}>
               Inquire Now
             </Button>
@@ -162,6 +196,34 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Trust Strip */}
+      <div className="border-y border-white/8 bg-secondary/20 py-5">
+        <div className="container mx-auto px-6 md:px-12">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-wrap justify-center md:justify-between items-center gap-6 md:gap-0"
+          >
+            {[
+              { value: "100+", label: "Documents Delivered" },
+              { value: "48-Hour", label: "Typical Turnaround" },
+              { value: "100%", label: "Confidential & Secure" },
+              { value: "3", label: "Signature Resume Styles" },
+            ].map((stat, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <div className="text-center">
+                  <div className="text-primary font-serif text-lg font-semibold">{stat.value}</div>
+                  <div className="text-xs text-muted-foreground uppercase tracking-widest">{stat.label}</div>
+                </div>
+                {i < 3 && <div className="hidden md:block w-px h-8 bg-white/10 mx-4" />}
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
       {/* Services */}
       <section id="services" className="py-32 bg-secondary/30 relative">
         <div className="container mx-auto px-6 md:px-12">
@@ -178,19 +240,22 @@ export default function Home() {
                 title: "Resume Writing & Optimization",
                 desc: "Clean, ATS-optimized, professionally formatted resumes tailored to your career trajectory and goals.",
                 price: "Starting at $35",
-                icon: FileText
+                icon: FileText,
+                includes: ["1-page or 2-page resume", "ATS keyword optimization", "2 rounds of revisions", "PDF + DOCX delivery"],
               },
               {
                 title: "Business Document Kit",
                 desc: "Invoice, letterhead, and proposal templates with consistent branding so your business looks authoritative and gets paid.",
                 price: "Starting at $40–$100",
-                icon: ShieldCheck
+                icon: ShieldCheck,
+                includes: ["Invoice, letterhead & proposal", "Custom branded design", "Editable file formats", "Print & digital ready"],
               },
               {
                 title: "PDF Clean-Up & Polishing",
                 desc: "Turn messy documents into polished, presentable PDFs with pristine layout, better readability, and consistent design.",
                 price: "Starting at $15–$50 / doc",
-                icon: CheckCircle
+                icon: CheckCircle,
+                includes: ["Layout & formatting cleanup", "Consistent fonts & spacing", "1 revision included", "PDF delivery"],
               }
             ].map((service, i) => (
               <motion.div 
@@ -204,7 +269,15 @@ export default function Home() {
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/0 to-transparent group-hover:via-primary/50 transition-all duration-700" />
                 <service.icon className="w-10 h-10 text-primary mb-8 opacity-80" strokeWidth={1} />
                 <h3 className="text-2xl font-serif mb-4 group-hover:text-primary transition-colors">{service.title}</h3>
-                <p className="text-muted-foreground font-light leading-relaxed mb-8 flex-grow">{service.desc}</p>
+                <p className="text-muted-foreground font-light leading-relaxed mb-6">{service.desc}</p>
+                <ul className="space-y-2 mb-8 flex-grow">
+                  {service.includes.map((item, j) => (
+                    <li key={j} className="flex items-center gap-2 text-sm text-muted-foreground font-light">
+                      <span className="w-1 h-1 rounded-full bg-primary/70 shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
                 <div className="mt-auto">
                   <div className="text-sm tracking-widest uppercase text-foreground/70 mb-6">{service.price}</div>
                   <Button 
@@ -353,6 +426,13 @@ export default function Home() {
                 <p>We believe that how you present your information is just as important as the information itself. Poor formatting dilutes expertise; masterful design amplifies it.</p>
                 <p>CrownForm Studios provides the editorial polish that signals you take yourself seriously, driving career growth, business credibility, and tangible opportunities.</p>
               </div>
+
+              <div className="mt-10 border-l-2 border-primary/40 pl-6">
+                <p className="text-foreground/80 font-serif italic text-lg leading-relaxed mb-3">
+                  "I started CrownForm Studios because I watched talented people get passed over — not for lack of skill, but for lack of presentation. Every document we deliver is built to change that."
+                </p>
+                <p className="text-xs text-primary uppercase tracking-widest">— Founder, CrownForm Studios</p>
+              </div>
               
               <div className="mt-12 grid grid-cols-2 gap-6">
                 <div className="border-l border-primary/30 pl-6">
@@ -441,6 +521,53 @@ export default function Home() {
                   </div>
                 </div>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="py-32 bg-secondary/10">
+        <div className="container mx-auto px-6 md:px-12 max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+            className="text-center mb-16"
+          >
+            <span className="text-primary tracking-[0.2em] text-xs font-semibold uppercase mb-4 block">Common Questions</span>
+            <h2 className="text-4xl md:text-5xl font-serif">Everything You Need to Know</h2>
+          </motion.div>
+
+          <div className="space-y-0 divide-y divide-white/8">
+            {[
+              {
+                q: "How long does turnaround take?",
+                a: "Most orders are completed within 48 hours of receiving your information. Rush delivery (24 hours) is available — just mention it in your intake form and we will confirm availability.",
+              },
+              {
+                q: "How many revisions are included?",
+                a: "Resume orders include 2 rounds of revisions. PDF Clean-Up orders include 1 revision. Business Document Kits include revisions until you are satisfied with the design direction. Additional rounds beyond the included amount can be discussed.",
+              },
+              {
+                q: "What file formats will I receive?",
+                a: "Resumes are delivered as PDF and DOCX so you can edit them yourself going forward. Business document templates are delivered in editable formats (Word or Google Docs compatible). PDF Clean-Up jobs are delivered as a polished PDF.",
+              },
+              {
+                q: "Is my information kept private?",
+                a: "Absolutely. All information you share — personal details, career history, business documents — is handled with strict confidentiality and used solely to complete your order. We never share or store your data beyond the project.",
+              },
+              {
+                q: "What if I am not happy with the result?",
+                a: "Your satisfaction matters. We work with you through included revisions to get the document right. If you have concerns after revisions, reach out directly and we will make it right.",
+              },
+              {
+                q: "How do I pay?",
+                a: "Payment details are shared after we review your intake form and confirm your order scope. We keep the process simple and direct.",
+              },
+            ].map((item, i) => (
+              <FaqItem key={i} question={item.q} answer={item.a} index={i} />
             ))}
           </div>
         </div>
