@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Crown, ArrowRight, FileText, CheckCircle, ShieldCheck, ChevronRight, ChevronDown, Menu, X, ExternalLink, Clock, Sparkles } from "lucide-react";
+import { Crown, ArrowRight, FileText, CheckCircle, ShieldCheck, ChevronRight, ChevronDown, Menu, X, ExternalLink, Clock, Sparkles, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import brandFlyer from "@assets/file_00000000e71471fd82d71f886a0479c3_1777583268827.png";
@@ -508,39 +508,63 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Results */}
       <section id="testimonials" className="py-32 bg-secondary/20">
         <div className="container mx-auto px-6 md:px-12">
-          <h2 className="text-center text-4xl md:text-5xl font-serif mb-20">Clientele</h2>
-          
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+            className="text-center mb-20"
+          >
+            <span className="text-primary tracking-[0.2em] text-xs font-semibold uppercase mb-4 block">Real Results</span>
+            <h2 className="text-4xl md:text-5xl font-serif">What Our Work Delivers</h2>
+          </motion.div>
+
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { quote: "The resume rewrite completely changed my job search. I landed three interviews in the first week of using the new format.", author: "Elena R.", role: "Senior Marketing Manager" },
-              { quote: "Our business proposals finally look as professional as the services we offer. The investment paid for itself immediately.", author: "Marcus T.", role: "Agency Founder" },
-              { quote: "CrownForm brings an editorial eye to dry corporate documents. Absolute perfection in formatting and typography.", author: "Sarah J.", role: "Financial Consultant" }
-            ].map((t, i) => (
-              <motion.div 
+              {
+                result: "More Interviews",
+                detail: "Clients with optimized, ATS-friendly resumes report significantly more callbacks and interview requests within the first two weeks.",
+                icon: "01",
+              },
+              {
+                result: "Immediate Credibility",
+                detail: "A polished business document kit signals professionalism from the first touchpoint — helping you win clients before the conversation even starts.",
+                icon: "02",
+              },
+              {
+                result: "Documents Ready to Send",
+                detail: "No more embarrassment over messy formatting. Every file we deliver is clean, consistent, and ready to present to anyone.",
+                icon: "03",
+              },
+            ].map((item, i) => (
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="p-8 border border-white/5 bg-background relative"
+                className="p-8 border border-white/5 bg-background relative group hover:border-primary/30 transition-colors"
               >
-                <div className="text-primary font-serif text-6xl absolute top-4 left-6 opacity-20">"</div>
-                <p className="text-muted-foreground font-light italic leading-relaxed mb-8 relative z-10 pt-4">{t.quote}</p>
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-xs font-serif text-primary border border-primary/20">
-                    {t.author.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium">{t.author}</div>
-                    <div className="text-xs text-muted-foreground">{t.role}</div>
-                  </div>
-                </div>
+                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/0 to-transparent group-hover:via-primary/40 transition-all duration-700" />
+                <div className="text-primary/20 font-serif text-5xl font-bold mb-6">{item.icon}</div>
+                <h3 className="font-serif text-xl mb-4 text-foreground group-hover:text-primary transition-colors">{item.result}</h3>
+                <p className="text-muted-foreground font-light leading-relaxed text-sm">{item.detail}</p>
               </motion.div>
             ))}
           </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-center text-xs text-muted-foreground/50 uppercase tracking-widest mt-12"
+          >
+            Results vary by individual. See our portfolio for sample work.
+          </motion.p>
         </div>
       </section>
 
@@ -677,10 +701,22 @@ export default function Home() {
               <p className="text-muted-foreground text-sm font-serif italic">Where Documents Become Authority.</p>
             </div>
             
-            <div className="flex gap-8 text-sm uppercase tracking-widest text-muted-foreground">
-              <a href="#services" className="hover:text-primary transition-colors">Services</a>
-              <a href="#process" className="hover:text-primary transition-colors">Process</a>
-              <a href="#contact" className="hover:text-primary transition-colors">Contact</a>
+            <div className="flex flex-col items-center md:items-end gap-4">
+              <div className="flex gap-8 text-sm uppercase tracking-widest text-muted-foreground">
+                <a href="#services" className="hover:text-primary transition-colors">Services</a>
+                <a href="#process" className="hover:text-primary transition-colors">Process</a>
+                <a href="#contact" className="hover:text-primary transition-colors">Contact</a>
+              </div>
+              <a
+                href="https://www.linkedin.com/in/portiaallen40"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors group"
+                aria-label="CrownForm Studios on LinkedIn"
+              >
+                <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
+                <span className="text-xs uppercase tracking-widest">LinkedIn</span>
+              </a>
             </div>
           </div>
           
